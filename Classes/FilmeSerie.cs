@@ -24,7 +24,7 @@ namespace Filmes.Series
 
         public override string ToString()
 		{
-			// Environment.NewLine https://docs.microsoft.com/en-us/dotnet/api/system.environment.newline?view=netcore-3.1
+			// Environment.NewLine https://docs.microsoft.com/en-us/dotnet/api/system.environment.newline?view=net5.0
             string retorno = "";
             retorno += "Gênero: " + this.Genero + Environment.NewLine;
             retorno += "Titulo: " + this.Titulo + Environment.NewLine;

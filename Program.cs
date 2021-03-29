@@ -7,7 +7,7 @@ namespace Filmes.Series
         static FilmeSerieRepositorio repositorio = new FilmeSerieRepositorio();
         static void Main(string[] args)
         {
-            string opcaoUsuario = ObterOpcaoUsuario();
+            string opcaoUsuario = "C";
 
 			while (opcaoUsuario.ToUpper() != "X")
 			{
@@ -17,10 +17,12 @@ namespace Filmes.Series
 						ListarSeries();
 						break;
 					case "2":
-						InserirSerie();
+						Inserir();
+						Console.Clear();
 						break;
 					case "3":
 						AtualizarSerie();
+						Console.Clear();
 						break;
 					case "4":
 						ExcluirSerie();
@@ -36,11 +38,10 @@ namespace Filmes.Series
 						throw new ArgumentOutOfRangeException();
 				}
 
-				opcaoUsuario = ObterOpcaoUsuario();
+				opcaoUsuario = Menu();
 			}
 
 			Console.WriteLine("Obrigado por utilizar nossos serviços.");
-			Console.ReadLine();
         }
 
         private static void ExcluirSerie()
@@ -66,8 +67,8 @@ namespace Filmes.Series
 			Console.Write("Digite o id da série: ");
 			int indiceSerie = int.Parse(Console.ReadLine());
 
-			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getvalues?view=netcore-3.1
-			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getname?view=netcore-3.1
+			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getvalues?view=net5.0
+			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getname?view=net5.0
 			foreach (int i in Enum.GetValues(typeof(Genero)))
 			{
 				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
@@ -112,12 +113,20 @@ namespace Filmes.Series
 			}
 		}
 
-        private static void InserirSerie()
+        private static void Inserir()
 		{
-			Console.WriteLine("Inserir nova série");
+			Console.WriteLine("*** Inserir ***");
 
 			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getvalues?view=net5.0
 			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getname?view=net5.0
+
+			foreach (int i in Enum.GetValues(typeof(Tipo)))
+			{
+				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Tipo), i));
+			}
+			Console.Write("Digite o tipo que deseja incluir: ");
+			int entradaTipo = int.Parse(Console.ReadLine());
+
 			foreach (int i in Enum.GetValues(typeof(Genero)))
 			{
 				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
@@ -143,21 +152,22 @@ namespace Filmes.Series
 			repositorio.Insere(novaSerie);
 		}
 
-        private static string ObterOpcaoUsuario()
+        private static string Menu()
 		{
+			//Console.Clear();
 			Console.WriteLine();
 			Console.WriteLine("Filmes e Séries a seu dispor!!!");
-			Console.WriteLine("Informe a opção desejada:");
 
-			Console.WriteLine("1- Listar séries");
-			Console.WriteLine("2- Inserir nova série");
-			Console.WriteLine("3- Atualizar série");
-			Console.WriteLine("4- Excluir série");
-			Console.WriteLine("5- Visualizar série");
+			Console.WriteLine("1- Listar");
+			Console.WriteLine("2- Inserir");
+			Console.WriteLine("3- Atualizar");
+			Console.WriteLine("4- Excluir");
+			Console.WriteLine("5- Visualizar");
 			Console.WriteLine("C- Limpar Tela");
 			Console.WriteLine("X- Sair");
 			Console.WriteLine();
 
+			Console.Write("Informe a opção desejada: ");
 			string opcaoUsuario = Console.ReadLine().ToUpper();
 			Console.WriteLine();
 			return opcaoUsuario;

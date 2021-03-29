@@ -7,6 +7,7 @@ namespace Filmes.Series
 	public class FilmeSerieRepositorio : IRepositorio<FilmeSerie>
 	{
         private List<FilmeSerie> listaSerie = new List<FilmeSerie>();
+		private List<FilmeSerie> listaFilme = new List<FilmeSerie>();
 		public void Atualiza(int id, FilmeSerie objeto)
 		{
 			listaSerie[id] = objeto;
