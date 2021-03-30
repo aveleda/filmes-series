@@ -1,5 +1,0 @@
-C:\Users\Bino\Documents\workspace\digitalOne\projeto1\Filmes.Series\obj\Debug\net5.0\Filmes.Series.csprojAssemblyReference.cache
-C:\Users\Bino\Documents\workspace\digitalOne\projeto1\Filmes.Series\obj\Debug\net5.0\Filmes.Series.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Bino\Documents\workspace\digitalOne\projeto1\Filmes.Series\obj\Debug\net5.0\Filmes.Series.AssemblyInfoInputs.cache
-C:\Users\Bino\Documents\workspace\digitalOne\projeto1\Filmes.Series\obj\Debug\net5.0\Filmes.Series.AssemblyInfo.cs
-C:\Users\Bino\Documents\workspace\digitalOne\projeto1\Filmes.Series\obj\Debug\net5.0\Filmes.Series.csproj.CoreCompileInputs.cache
