@@ -44,14 +44,22 @@ namespace Filmes.Series
 			}
 		}
 
-		public int ProximoId()
+		public int ProximoId(int filme)
 		{
-			return listaSerie.Count;
+			if (filme == 1) {
+				return listaFilme.Count;
+			} else {
+				return listaSerie.Count;
+			}
 		}
 
-		public FilmeSerie RetornaPorId(int id)
+		public FilmeSerie RetornaPorId(int filme, int id)
 		{
-			return listaSerie[id];
+			if (filme == 1) {
+				return listaFilme[id];
+			} else {
+				return listaSerie[id];
+			}
 		}
 	}
 }
