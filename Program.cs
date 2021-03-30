@@ -49,23 +49,36 @@ namespace Filmes.Series
 			Console.WriteLine("*** Excluir ***");
 
 			int entradaTipo = selecaoTipo();
+			int indiceFilmeSerie = -1;
 
 			Console.Write("Digite o id da série: ");
-			int indiceSerie = int.Parse(Console.ReadLine());
+			try {
+				indiceFilmeSerie = int.Parse(Console.ReadLine());	
+			} catch {
+				Console.WriteLine("Opção inválida.");
+				return;
+			}
 
-			repositorio.Exclui(entradaTipo, indiceSerie);
+			repositorio.Exclui(entradaTipo, indiceFilmeSerie);
 		}
 
         private static void Visualizar()
 		{
 			Console.WriteLine("*** Visualizar ***");
 
+			int indiceFilmeSerie = -1;
+
 			int entradaTipo = selecaoTipo();
 
-			Console.Write("Digite o id da série: ");
-			int indiceSerie = int.Parse(Console.ReadLine());
+			Console.Write("Digite o id do filme ou série: ");
+			try {
+				indiceFilmeSerie = int.Parse(Console.ReadLine());	
+			} catch {
+				Console.WriteLine("Opção inválida.");
+				return;
+			}
 
-			var serie = repositorio.RetornaPorId(indiceSerie);
+			var serie = repositorio.RetornaPorId(entradaTipo, indiceFilmeSerie);
 
 			Console.WriteLine(serie);
 		}
@@ -75,12 +88,29 @@ namespace Filmes.Series
 			Console.WriteLine("*** Atualizar ***");
 
 			int entradaTipo = selecaoTipo();
+			int indice = -1;
 
 			Console.Write("Digite o id correspondente: ");
-			int indice = int.Parse(Console.ReadLine());
+			try {
+				indice = int.Parse(Console.ReadLine());	
+			} catch {
+				Console.WriteLine("Opção inválida.");
+				return;
+			}
 
-			FilmeSerie atualizaFilmeSerie;
-            dadosFilmeSerie(out atualizaFilmeSerie);
+			if ((indice < 0) | (indice >= repositorio.ProximoId(entradaTipo))) {
+				Console.WriteLine("Opção inválida.");
+				return;
+			}
+			
+            dadosFilmeSerie(out int entradaGenero, out int entradaAno, 
+				out string entradaTitulo, out string entradaDescricao);
+			
+			FilmeSerie atualizaFilmeSerie = new FilmeSerie(id: indice,
+										genero: (Genero)entradaGenero,
+										titulo: entradaTitulo,
+										ano: entradaAno,
+										descricao: entradaDescricao);
 
 			repositorio.Atualiza(entradaTipo, indice, atualizaFilmeSerie);
 		}
@@ -116,7 +146,14 @@ namespace Filmes.Series
             int entradaTipo = selecaoTipo();
 
             FilmeSerie novoFilmeSerie;
-            dadosFilmeSerie(out novoFilmeSerie);
+            dadosFilmeSerie(out int entradaGenero, out int entradaAno, 
+				out string entradaTitulo, out string entradaDescricao);
+
+			novoFilmeSerie = new FilmeSerie(id: repositorio.ProximoId(entradaTipo),
+								genero: (Genero)entradaGenero,
+								titulo: entradaTitulo,
+								ano: entradaAno,
+								descricao: entradaDescricao);
 
             repositorio.Insere(entradaTipo, novoFilmeSerie);
         }
@@ -134,20 +171,25 @@ namespace Filmes.Series
             Console.Write("Digite o tipo que deseja incluir: ");
 
 			do {
-				entradaTipo = int.Parse(Console.ReadLine());
+				try {
+					entradaTipo = int.Parse(Console.ReadLine());
+				} catch (FormatException) {
+					entradaTipo = 0;
+				}
 				check = (entradaTipo < 1) | (entradaTipo > Enum.GetValues(typeof(Tipo)).Length);
 				if (check) {
-					Console.WriteLine("Valor inválido. Por favor, entre com o valor dentro da faixa.");
+					Console.WriteLine("Opção inválida. Por favor, entre com o valor dentro da faixa.");
 				}
 			} while (check);
             return entradaTipo;
         }
 
-        private static void dadosFilmeSerie(out FilmeSerie novoFilmeSerie)
+        private static void dadosFilmeSerie(out int entradaGenero, out int entradaAno, 
+			out string entradaTitulo, out string entradaDescricao)
         {
-			int entradaGenero, entradaAno;
-            string entradaTitulo, entradaDescricao;
 			bool check;
+
+			Console.WriteLine();
 
             foreach (int i in Enum.GetValues(typeof(Genero)))
             {
@@ -157,7 +199,7 @@ namespace Filmes.Series
             
 			do {
 				entradaGenero = int.Parse(Console.ReadLine());
-				check = (entradaGenero < 1) | (entradaGenero > Enum.GetValues(typeof(Tipo)).Length);
+				check = (entradaGenero < 1) | (entradaGenero > Enum.GetValues(typeof(Genero)).Length);
 				if (check) {
 					Console.WriteLine("Valor inválido. Por favor, entre com o valor dentro da faixa.");
 				}
@@ -179,17 +221,11 @@ namespace Filmes.Series
 			}
             Console.Write("Digite a Descrição: ");
             entradaDescricao = Console.ReadLine();
-
-			novoFilmeSerie = new FilmeSerie(id: repositorio.ProximoId(),
-								genero: (Genero)entradaGenero,
-								titulo: entradaTitulo,
-								ano: entradaAno,
-								descricao: entradaDescricao);
         }
 
         private static string Menu()
 		{
-			//Console.WriteLine();
+			Console.WriteLine();
 			Console.WriteLine("Filmes e Séries a seu dispor!!!");
 
 			Console.WriteLine("1- Listar");
