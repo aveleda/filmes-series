@@ -147,18 +147,36 @@ namespace Filmes.Series
         {
 			int entradaGenero, entradaAno;
             string entradaTitulo, entradaDescricao;
+			bool check;
 
             foreach (int i in Enum.GetValues(typeof(Genero)))
             {
                 Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
             }
             Console.Write("Digite o gênero entre as opções acima: ");
-            entradaGenero = int.Parse(Console.ReadLine());
-
-            Console.Write("Digite o Título: ");
+            
+			do {
+				entradaGenero = int.Parse(Console.ReadLine());
+				check = (entradaGenero < 1) | (entradaGenero > Enum.GetValues(typeof(Tipo)).Length);
+				if (check) {
+					Console.WriteLine("Valor inválido. Por favor, entre com o valor dentro da faixa.");
+				}
+			} while (check);
+			
+			Console.Write("Digite o Título: ");
             entradaTitulo = Console.ReadLine();
             Console.Write("Digite o Ano de Início: ");
-            entradaAno = int.Parse(Console.ReadLine());
+			try {
+				entradaAno = int.Parse(Console.ReadLine());
+			} catch (FormatException) {
+				Console.WriteLine("Ano inválido. Assumindo ano padrão 1900.");
+				entradaAno = 1900;
+			}
+
+			if ((entradaAno < 1850) | (entradaAno > DateTime.Now.Year)) {
+				Console.WriteLine("Ano inválido. Assumindo ano padrão 1900.");
+				entradaAno = 1900;
+			}
             Console.Write("Digite a Descrição: ");
             entradaDescricao = Console.ReadLine();
 
@@ -171,7 +189,7 @@ namespace Filmes.Series
 
         private static string Menu()
 		{
-			Console.WriteLine();
+			//Console.WriteLine();
 			Console.WriteLine("Filmes e Séries a seu dispor!!!");
 
 			Console.WriteLine("1- Listar");
