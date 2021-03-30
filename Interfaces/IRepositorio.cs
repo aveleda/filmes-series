@@ -4,11 +4,11 @@ namespace Filmes.Series.Interfaces
 {
     public interface IRepositorio<T>
     {
-        List<T> Lista();
+        List<T> Lista(int filme);
         T RetornaPorId(int id);        
-        void Insere(T entidade);        
-        void Exclui(int id);        
-        void Atualiza(int id, T entidade);
+        void Insere(int filme, T entidade);        
+        void Exclui(int filme, int id);        
+        void Atualiza(int filme, int id, T entidade);
         int ProximoId();
     }
 }

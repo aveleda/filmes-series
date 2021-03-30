@@ -169,12 +169,12 @@ namespace Filmes.Series
 			try {
 				entradaAno = int.Parse(Console.ReadLine());
 			} catch (FormatException) {
-				Console.WriteLine("Ano inválido. Assumindo ano padrão 1900.");
+				Console.WriteLine("Ano inválido. Atribuindo ano padrão 1900.");
 				entradaAno = 1900;
 			}
 
 			if ((entradaAno < 1850) | (entradaAno > DateTime.Now.Year)) {
-				Console.WriteLine("Ano inválido. Assumindo ano padrão 1900.");
+				Console.WriteLine("Ano inválido. Atribuindo ano padrão 1900.");
 				entradaAno = 1900;
 			}
             Console.Write("Digite a Descrição: ");

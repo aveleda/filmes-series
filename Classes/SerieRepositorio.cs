@@ -8,24 +8,40 @@ namespace Filmes.Series
 	{
         private List<FilmeSerie> listaSerie = new List<FilmeSerie>();
 		private List<FilmeSerie> listaFilme = new List<FilmeSerie>();
-		public void Atualiza(int id, FilmeSerie objeto)
+		public void Atualiza(int filme, int id, FilmeSerie objeto)
 		{
-			listaSerie[id] = objeto;
+			if (filme == 1) {
+				listaFilme[id] = objeto;
+			} else {
+				listaSerie[id] = objeto;
+			}
 		}
 
-		public void Exclui(int id)
+		public void Exclui(int filme, int id)
 		{
-			listaSerie[id].Excluir();
+			if (filme == 1) {
+				listaFilme[id].Excluir();
+			} else {
+				listaSerie[id].Excluir();
+			};
 		}
 
-		public void Insere(FilmeSerie objeto)
+		public void Insere(int filme, FilmeSerie objeto)
 		{
-			listaSerie.Add(objeto);
+			if (filme == 1) {
+				listaFilme.Add(objeto);
+			} else {
+				listaSerie.Add(objeto);
+			}
 		}
 
-		public List<FilmeSerie> Lista()
+		public List<FilmeSerie> Lista(int filme)
 		{
-			return listaSerie;
+			if (filme == 1) {
+				return listaFilme;
+			} else {
+				return listaSerie;
+			}
 		}
 
 		public int ProximoId()
