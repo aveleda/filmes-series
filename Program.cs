@@ -14,21 +14,21 @@ namespace Filmes.Series
 				switch (opcaoUsuario)
 				{
 					case "1":
-						ListarSeries();
+						Listar();
 						break;
 					case "2":
 						Inserir();
 						Console.Clear();
 						break;
 					case "3":
-						AtualizarSerie();
+						Atualizar();
 						Console.Clear();
 						break;
 					case "4":
-						ExcluirSerie();
+						Excluir();
 						break;
 					case "5":
-						VisualizarSerie();
+						Visualizar();
 						break;
 					case "C":
 						Console.Clear();
@@ -44,16 +44,24 @@ namespace Filmes.Series
 			Console.WriteLine("Obrigado por utilizar nossos serviços.");
         }
 
-        private static void ExcluirSerie()
+        private static void Excluir()
 		{
+			Console.WriteLine("*** Excluir ***");
+
+			int entradaTipo = selecaoTipo();
+
 			Console.Write("Digite o id da série: ");
 			int indiceSerie = int.Parse(Console.ReadLine());
 
-			repositorio.Exclui(indiceSerie);
+			repositorio.Exclui(entradaTipo, indiceSerie);
 		}
 
-        private static void VisualizarSerie()
+        private static void Visualizar()
 		{
+			Console.WriteLine("*** Visualizar ***");
+
+			int entradaTipo = selecaoTipo();
+
 			Console.Write("Digite o id da série: ");
 			int indiceSerie = int.Parse(Console.ReadLine());
 
@@ -62,99 +70,107 @@ namespace Filmes.Series
 			Console.WriteLine(serie);
 		}
 
-        private static void AtualizarSerie()
+        private static void Atualizar()
 		{
-			Console.Write("Digite o id da série: ");
-			int indiceSerie = int.Parse(Console.ReadLine());
+			Console.WriteLine("*** Atualizar ***");
 
-			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getvalues?view=net5.0
-			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getname?view=net5.0
-			foreach (int i in Enum.GetValues(typeof(Genero)))
-			{
-				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
-			}
-			Console.Write("Digite o gênero entre as opções acima: ");
-			int entradaGenero = int.Parse(Console.ReadLine());
+			int entradaTipo = selecaoTipo();
 
-			Console.Write("Digite o Título da Série: ");
-			string entradaTitulo = Console.ReadLine();
+			Console.Write("Digite o id correspondente: ");
+			int indice = int.Parse(Console.ReadLine());
 
-			Console.Write("Digite o Ano de Início da Série: ");
-			int entradaAno = int.Parse(Console.ReadLine());
+			FilmeSerie atualizaFilmeSerie;
+            dadosFilmeSerie(out atualizaFilmeSerie);
 
-			Console.Write("Digite a Descrição da Série: ");
-			string entradaDescricao = Console.ReadLine();
-
-			FilmeSerie atualizaSerie = new FilmeSerie(id: indiceSerie,
-										genero: (Genero)entradaGenero,
-										titulo: entradaTitulo,
-										ano: entradaAno,
-										descricao: entradaDescricao);
-
-			repositorio.Atualiza(indiceSerie, atualizaSerie);
+			repositorio.Atualiza(entradaTipo, indice, atualizaFilmeSerie);
 		}
-        private static void ListarSeries()
+        private static void Listar()
 		{
-			Console.WriteLine("Listar séries");
+			Console.WriteLine("*** Listar ***");
 
-			var lista = repositorio.Lista();
+			int entradaTipo = selecaoTipo();
+
+			var lista = repositorio.Lista(entradaTipo);
 
 			if (lista.Count == 0)
 			{
-				Console.WriteLine("Nenhuma série cadastrada.");
+				Console.WriteLine("Nenhum cadastro.");
 				return;
 			}
 
-			foreach (var serie in lista)
+			foreach (var filmeserie in lista)
 			{
-                var excluido = serie.retornaExcluido();
+                var excluido = filmeserie.retornaExcluido();
                 
-				Console.WriteLine("#ID {0}: - {1} {2}", serie.retornaId(), serie.retornaTitulo(), (excluido ? "*Excluído*" : ""));
+				Console.WriteLine("#ID {0}: - {1} {2}", filmeserie.retornaId(), filmeserie.retornaTitulo(), (excluido ? "*Excluído*" : ""));
 			}
 		}
 
         private static void Inserir()
-		{
-			Console.WriteLine("*** Inserir ***");
+        {
+            Console.WriteLine("*** Inserir ***");
 
-			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getvalues?view=net5.0
-			// https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getname?view=net5.0
+            // https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getvalues?view=net5.0
+            // https://docs.microsoft.com/pt-br/dotnet/api/system.enum.getname?view=net5.0
+
+            int entradaTipo = selecaoTipo();
+
+            FilmeSerie novoFilmeSerie;
+            dadosFilmeSerie(out novoFilmeSerie);
+
+            repositorio.Insere(entradaTipo, novoFilmeSerie);
+        }
+
+        private static int selecaoTipo()
+        {
+            int entradaTipo;
+			bool check = true;
 
 			foreach (int i in Enum.GetValues(typeof(Tipo)))
-			{
-				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Tipo), i));
-			}
-			Console.Write("Digite o tipo que deseja incluir: ");
-			int entradaTipo = int.Parse(Console.ReadLine());
+            {
+                Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Tipo), i));
+            }
+			
+            Console.Write("Digite o tipo que deseja incluir: ");
 
-			foreach (int i in Enum.GetValues(typeof(Genero)))
-			{
-				Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
-			}
-			Console.Write("Digite o gênero entre as opções acima: ");
-			int entradaGenero = int.Parse(Console.ReadLine());
+			do {
+				entradaTipo = int.Parse(Console.ReadLine());
+				check = (entradaTipo < 1) | (entradaTipo > Enum.GetValues(typeof(Tipo)).Length);
+				if (check) {
+					Console.WriteLine("Valor inválido. Por favor, entre com o valor dentro da faixa.");
+				}
+			} while (check);
+            return entradaTipo;
+        }
 
-			Console.Write("Digite o Título da Série: ");
-			string entradaTitulo = Console.ReadLine();
+        private static void dadosFilmeSerie(out FilmeSerie novoFilmeSerie)
+        {
+			int entradaGenero, entradaAno;
+            string entradaTitulo, entradaDescricao;
 
-			Console.Write("Digite o Ano de Início da Série: ");
-			int entradaAno = int.Parse(Console.ReadLine());
+            foreach (int i in Enum.GetValues(typeof(Genero)))
+            {
+                Console.WriteLine("{0}-{1}", i, Enum.GetName(typeof(Genero), i));
+            }
+            Console.Write("Digite o gênero entre as opções acima: ");
+            entradaGenero = int.Parse(Console.ReadLine());
 
-			Console.Write("Digite a Descrição da Série: ");
-			string entradaDescricao = Console.ReadLine();
+            Console.Write("Digite o Título: ");
+            entradaTitulo = Console.ReadLine();
+            Console.Write("Digite o Ano de Início: ");
+            entradaAno = int.Parse(Console.ReadLine());
+            Console.Write("Digite a Descrição: ");
+            entradaDescricao = Console.ReadLine();
 
-			FilmeSerie novaSerie = new FilmeSerie(id: repositorio.ProximoId(),
-										genero: (Genero)entradaGenero,
-										titulo: entradaTitulo,
-										ano: entradaAno,
-										descricao: entradaDescricao);
-
-			repositorio.Insere(novaSerie);
-		}
+			novoFilmeSerie = new FilmeSerie(id: repositorio.ProximoId(),
+								genero: (Genero)entradaGenero,
+								titulo: entradaTitulo,
+								ano: entradaAno,
+								descricao: entradaDescricao);
+        }
 
         private static string Menu()
 		{
-			//Console.Clear();
 			Console.WriteLine();
 			Console.WriteLine("Filmes e Séries a seu dispor!!!");
 
