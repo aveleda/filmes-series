@@ -35,7 +35,8 @@ namespace Filmes.Series
 						break;
 
 					default:
-						throw new ArgumentOutOfRangeException();
+						Console.WriteLine("Opção inválida");
+						break;
 				}
 
 				opcaoUsuario = Menu();
@@ -59,6 +60,11 @@ namespace Filmes.Series
 				return;
 			}
 
+			if ((indiceFilmeSerie < 0) | (indiceFilmeSerie >= repositorio.ProximoId(entradaTipo))) {
+				Console.WriteLine("Opção inválida.");
+				return;
+			}
+
 			repositorio.Exclui(entradaTipo, indiceFilmeSerie);
 		}
 
@@ -74,6 +80,11 @@ namespace Filmes.Series
 			try {
 				indiceFilmeSerie = int.Parse(Console.ReadLine());	
 			} catch {
+				Console.WriteLine("Opção inválida.");
+				return;
+			}
+
+			if ((indiceFilmeSerie < 0) | (indiceFilmeSerie >= repositorio.ProximoId(entradaTipo))) {
 				Console.WriteLine("Opção inválida.");
 				return;
 			}
