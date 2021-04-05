@@ -1,5 +1,9 @@
 # Digital Innovation One - Prática .NET
 
+|Branch|Build|
+|-:|-|
+|master|![.NET](https://github.com/aveleda/filmes-series/workflows/.NET/badge.svg)|
+
 ## Criando uma APP de cadastro de filmes e séries em memória
 
 ## Contato
